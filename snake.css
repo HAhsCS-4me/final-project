@@ -1,0 +1,51 @@
+body {
+    background-color: #112b55;
+    text-align: center;
+}
+
+h1, p {
+    color: #d9d9d9;
+}
+
+a {
+    color: #d9d9d9;
+    text-decoration: none;
+    font-size: 20px;
+}
+
+#container {
+    background-color: black;
+    width: 900px;
+    margin: auto;
+    border: 2px solid #d9d9d9;
+    display: table;
+}
+
+#container div {
+    width: 28px; 
+    height: 28px; 
+    border: 1px solid #0c1927;
+    float: left;
+}
+
+.grey {
+    background-color: grey;
+}
+
+.apples {
+    background-color: red;
+}
+
+.player {
+    background-color: green;
+}
+
+.clear {
+    padding-top: 20px;
+    clear: both;
+}
+
+select {
+    font-size: 20px;
+
+}
