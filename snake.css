@@ -17,7 +17,6 @@ a {
     background-color: black;
     width: 900px;
     margin: auto;
-    border: 2px solid #d9d9d9;
     display: table;
 }
 
@@ -28,8 +27,8 @@ a {
     float: left;
 }
 
-.grey {
-    background-color: grey;
+.obstacle {
+    background-color: #0c1927;
 }
 
 .apples {
