@@ -80,10 +80,11 @@ function testDirection() {
 }
 
 function updatePlayer(newRow, newCol) {
-    //When the player eats an apple add 2 to the player
     //Add player location to empty array 
+    //player2.push([newRow, newCol]); 
     player2.push([player.row, player.col]);
 
+    //When the player eats an apple add 2 to the player
     if (player.row == apples.row && player.col == apples.col) {
         cellId = 'cell' + apples.row + '-' + apples.col
         document.getElementById(cellId).classList.remove('apples');
@@ -91,6 +92,14 @@ function updatePlayer(newRow, newCol) {
         //Add apple to random location on the grid
         apples.row = Math.randomInt(1, 19);
         apples.col = Math.randomInt(1, 29);
+
+        //If apple generates underneath the snake
+        for (i = 0; i < player2.length; i++) {
+            if (apples.row == player2[i][0] && apples.col == player2[i][1]) {
+                apples.row = Math.randomInt(1, 19);
+                apples.col = Math.randomInt(1, 29);
+            }
+        }
 
         cellId = 'cell' + apples.row + '-' + apples.col
         document.getElementById(cellId).classList.add('apples');
@@ -120,7 +129,7 @@ function updatePlayer(newRow, newCol) {
         player.dir = 'unmoving';
     }
 
-    //Update class and grid of new player location (the head of the snake) 
+    //Add the head of the snake
     player.row = newRow;
     player.col = newCol;
 
@@ -131,7 +140,7 @@ function updatePlayer(newRow, newCol) {
 
     //Stop game when the the location of the head equals any point in the body
     for (i = 0; i < player2.length; i++) {
-        if (player.row == player2[i][0] && player.col == player2[i][1]) {
+        if (newRow == player2[i][0] && newCol == player2[i][1]) {
             document.getElementById('game-over').innerHTML = 'GAME OVER';
             document.getElementById('game-over').style.color = 'yellow';
             document.getElementById('length').innerHTML = 'Length:' + ' ' + numApples;
@@ -139,25 +148,38 @@ function updatePlayer(newRow, newCol) {
         }
     }
 
+    console.log(player2); 
+
 }
 
 function resetPositions() {
-    for (i = 0; i < player2.length; i++) {
-        cellId = 'cell' + player2[i][0] + '-' + player2[i][1]
+    for (i = player2.length - 1; i > -1; i--) {
+        //Remove the head of the snake 
+        cellId = 'cell' + player.row + '-' + player.col; 
+        document.getElementById(cellId).classList.remove('player');
+
+        grid[player.row][player.col] = 0; 
+
+        //Remove the body of the snake
+        cellId = 'cell' + player2[i][0] + '-' + player2[i][1]; 
         document.getElementById(cellId).classList.remove('player');
 
         grid[player2[i][0]][player2[i][1]] = 0;
 
-        player2.shift();
+        player2.splice(i, 1); 
+
     }
 
-    console.log(player2);
+    //Reset number of apples to 2
+    numApples = 2; 
 
+    //Remove apple from previous location 
     cellId = 'cell' + apples.row + '-' + apples.col
     document.getElementById(cellId).classList.remove('apples');
 
     grid[player.row][player.col] = 0;
 
+    //Add player to original position 
     player.row = 9;
     player.col = 14;
     player.dir = 'unmoving';
@@ -167,6 +189,7 @@ function resetPositions() {
 
     grid[player.row][player.col] = 2;
 
+    //Add apple to original position
     apples.row = 7;
     apples.col = 7;
 
@@ -175,67 +198,8 @@ function resetPositions() {
 
     grid[player.row][player.col] = 3;
 
+    //Reset the title screen 
     document.getElementById('game-over').innerHTML = 'Rip Off of Snake';
     document.getElementById('game-over').style.color = 'white';
     document.getElementById('length').innerHTML = 'Play a game of rip off snake that really emphasizes "rip off"';
 }
-
-
-// //When the player eats an apple add 2 to the player
-// //Add player location to empty array 
-// player2.push([player.row, player.col]);
-
-// if (player.row == apples.row && player.col == apples.col) {
-//     cellId = 'cell' + apples.row + '-' + apples.col
-//     document.getElementById(cellId).classList.remove('apples');
-
-//     //Add apple to random location on the grid
-//     apples.row = Math.randomInt(1, 19);
-//     apples.col = Math.randomInt(1, 29);
-
-//     cellId = 'cell' + apples.row + '-' + apples.col
-//     document.getElementById(cellId).classList.add('apples');
-
-//     grid[apples.row][apples.col] = 3;
-
-//     //Increase the length of the player when an apple is eaten
-//     numApples += 2;
-// }
-
-// //Remove player from previous location (remove the tail) 
-// if (player2.length == numApples) {
-//     player.row = player2[0][0];
-//     player.col = player2[0][1];
-
-//     cellId = 'cell' + player.row + '-' + player.col
-//     document.getElementById(cellId).classList.remove('player');
-
-//     player2.shift();
-// }
-
-// //Stop game when the player passes the grid 
-// if (newRow < 1 || newRow > NUM_ROWS - 2 || newCol < 1 || newCol > NUM_COLS - 2) {
-//     document.getElementById('game-over').innerHTML = 'GAME OVER';
-//     document.getElementById('game-over').style.color = 'yellow';
-//     document.getElementById('length').innerHTML = 'Length:' + ' ' + numApples;
-//     player.dir = 'unmoving';
-// }
-
-// //Update class and grid of new player location (the head of the snake) 
-// player.row = newRow;
-// player.col = newCol;
-
-// cellId = 'cell' + player.row + '-' + player.col
-// document.getElementById(cellId).classList.add('player');
-
-// grid[player.row][player.col] = 2;
-
-// //Stop game when the the location of the head equals any point in the body
-// for (i = 0; i < player2.length; i++) {
-//     if (player.row == player2[i][0] && player.col == player2[i][1]) {
-//         document.getElementById('game-over').innerHTML = 'GAME OVER';
-//         document.getElementById('game-over').style.color = 'yellow';
-//         document.getElementById('length').innerHTML = 'Length:' + ' ' + numApples;
-//         player.dir = 'unmoving';
-//     }
-// }
